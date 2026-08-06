@@ -39,6 +39,7 @@ interface FormState {
   dailyPaymentAmount: string;
   sku: string;
   isActive: boolean;
+  isAvailableInPackages: boolean;
 }
 
 function toFormState(product: ProductDto | null): FormState {
@@ -58,6 +59,7 @@ function toFormState(product: ProductDto | null): FormState {
       dailyPaymentAmount: '',
       sku: '',
       isActive: true,
+      isAvailableInPackages: false,
     };
   }
   const n = (v: number | null) => v?.toString() ?? '';
@@ -76,6 +78,7 @@ function toFormState(product: ProductDto | null): FormState {
     dailyPaymentAmount: n(product.dailyPaymentAmount),
     sku: product.sku ?? '',
     isActive: product.isActive,
+    isAvailableInPackages: product.isAvailableInPackages,
   };
 }
 
@@ -183,6 +186,7 @@ const ProductFormDialog = ({ open, onOpenChange, product, categories, onSaved }:
       dailyPaymentAmount: selectedCategory?.allowsDailyInstallment ? num(form.dailyPaymentAmount) : null,
       sku: form.sku.trim() || null,
       isActive: form.isActive,
+      isAvailableInPackages: form.isAvailableInPackages,
     };
 
     setSaving(true);
@@ -378,13 +382,22 @@ const ProductFormDialog = ({ open, onOpenChange, product, categories, onSaved }:
 
           {priceError && <p className="text-sm text-destructive font-arabic">{priceError}</p>}
 
-          <label className="flex items-center gap-2 text-sm font-arabic">
-            <Checkbox
-              checked={form.isActive}
-              onCheckedChange={(c) => setForm((p) => ({ ...p, isActive: c === true }))}
-            />
-            فعّال
-          </label>
+          <div className="flex items-center gap-4">
+            <label className="flex items-center gap-2 text-sm font-arabic">
+              <Checkbox
+                checked={form.isActive}
+                onCheckedChange={(c) => setForm((p) => ({ ...p, isActive: c === true }))}
+              />
+              فعّال
+            </label>
+            <label className="flex items-center gap-2 text-sm font-arabic">
+              <Checkbox
+                checked={form.isAvailableInPackages}
+                onCheckedChange={(c) => setForm((p) => ({ ...p, isAvailableInPackages: c === true }))}
+              />
+              متاح ضمن الباقات
+            </label>
+          </div>
 
           {submitError && <p className="text-sm text-destructive font-arabic">{submitError}</p>}
 

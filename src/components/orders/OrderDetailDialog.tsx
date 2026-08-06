@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '@/components/ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { apiFetch, ApiError, resolveMediaUrl } from '@/lib/api';
 import type { OrderDetailDto, OrderStatus } from '@/types/admin';
@@ -144,14 +145,28 @@ const OrderDetailDialog = ({ open, onOpenChange, orderId, onChanged }: OrderDeta
                 {detail.productName ?? detail.packageName ?? '—'}
               </p>
               {detail.items.length > 0 && (
-                <ul className="rounded-md border border-border divide-y divide-border">
-                  {detail.items.map((item) => (
-                    <li key={item.productId} className="font-arabic text-sm px-3 py-2 flex justify-between">
-                      <span>{item.productName}</span>
-                      <span className="text-muted-foreground">{formatMoney(item.unitPriceSnapshot)}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="rounded-md border border-border overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="font-arabic text-right">اسم المنتج</TableHead>
+                        <TableHead className="font-arabic text-right">الكمية</TableHead>
+                        <TableHead className="font-arabic text-right">سعر الوحدة</TableHead>
+                        <TableHead className="font-arabic text-right">الإجمالي الفرعي</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {detail.items.map((item) => (
+                        <TableRow key={item.productId}>
+                          <TableCell className="font-arabic">{item.productName}</TableCell>
+                          <TableCell>{item.quantity}</TableCell>
+                          <TableCell>{formatMoney(item.unitPriceSnapshot)}</TableCell>
+                          <TableCell>{formatMoney(item.unitPriceSnapshot * item.quantity)}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               )}
               <p className="font-arabic text-sm">
                 <span className="text-muted-foreground">طريقة الدفع: </span>

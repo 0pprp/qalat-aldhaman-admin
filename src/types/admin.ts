@@ -81,6 +81,7 @@ export interface ProductDto {
   dailyPaymentAmount: number | null;
   sku: string | null;
   isActive: boolean;
+  isAvailableInPackages: boolean;
   createdAt: string;
   updatedAt: string;
   images: ProductImageDto[];
@@ -101,6 +102,7 @@ export interface ProductUpsertRequest {
   dailyPaymentAmount?: number | null;
   sku?: string | null;
   isActive: boolean;
+  isAvailableInPackages: boolean;
 }
 
 export interface AddProductImageRequest {
@@ -171,6 +173,7 @@ export interface OrderItemDto {
   unitPriceSnapshot: number;
   unitPeriodicPaymentSnapshot: number | null;
   unitDownPaymentSnapshot: number | null;
+  quantity: number;
 }
 
 export interface OrderDetailDto {
